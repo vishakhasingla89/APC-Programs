@@ -1,0 +1,129 @@
+#include<stdio.h>
+
+#include<stdlib.h>
+
+#include<string.h>
+
+int *lps;
+
+void lps_table(char *str2)
+
+{
+
+    int i=0,j;
+
+    lps[0]=0;
+
+    for(j=1;j<strlen(str2);)
+
+    {
+
+        if(str2[i]==str2[j])
+
+        {
+
+            lps[j]=i+1;
+
+            i++;
+
+            j++;
+
+        }
+
+        else
+
+        {
+
+            if(i==0)
+
+            {
+
+                lps[j]=0;
+
+                j++;
+
+            }
+
+            else
+
+            i=lps[i-1];
+
+        }
+
+    }
+
+
+}
+
+char* kmp_algo(char *str1,char *str2)
+
+{
+
+    int i=0,j=0;
+
+    for(i=0;i<strlen(str1);)
+
+    {
+
+        printf("\n%d %d",i,j);
+
+        if(str1[i]==str2[j])
+
+        {
+
+            i++;
+
+            j++;
+
+        }
+
+        else if(j==0)
+
+        i++;
+
+        else
+
+        j=lps[j-1];
+
+        if(j==strlen(str2))
+
+        return &str1[i-j];
+
+    }
+
+    if(j==strlen(str2))
+
+    return &str1[i-j];
+
+    else
+
+    return NULL;
+
+}
+
+int main(){
+
+    char str1[50],str2[50];
+
+    scanf("%s",str1);
+
+    scanf("%s",str2);
+
+    lps=(int*)malloc(sizeof(int)*strlen(str2));
+
+    lps_table(str2);
+
+    int i;
+
+    for(i=0;i<strlen(str2);i++)
+
+    printf("%d ",lps[i]);
+
+    char *res=kmp_algo(str1,str2);
+
+    printf("\n%s",res);
+
+   /* abcdefabcdyabcdyabcdi
+abcdyabcdi*/
+
+}
