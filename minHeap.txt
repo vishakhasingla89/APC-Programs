@@ -1,0 +1,144 @@
+#include<stdio.h>
+
+int size=0;
+
+void swap(int *arr,int i,int j)
+{
+
+    int temp=arr[i];
+
+    arr[i]=arr[j];
+
+    arr[j]=temp;
+
+}
+
+void swim(int *arr,int i,int j)
+{
+
+    if(i==1)
+
+    return;
+
+    int child=arr[i];
+
+    int parent=arr[j];
+
+    if(parent>child)
+
+    swap(arr,i,j);
+
+    else
+
+    return;
+
+    i=i/2;
+
+    swim(arr,i,i/2);
+
+}
+
+void insert(int *arr,int i)
+{
+
+    size++;
+
+    swim(arr,i,i/2);
+
+}
+
+void sink(int *arr,int i)
+{
+
+    int l_index=2*i;
+
+    if(l_index>size)
+
+    return;
+
+    int r_index=2*i+1;
+
+    if(r_index>size)
+
+    r_index=l_index;
+
+    int left_child=arr[l_index];
+
+    int right_child=arr[r_index];
+
+    int pos;
+
+    if((arr[i]>left_child)||(arr[i]>right_child))
+
+    {
+
+        if(left_child<=right_child)
+
+        {
+
+        swap(arr,i,l_index);
+
+        pos=l_index;
+
+        }
+
+        else
+
+        {
+
+        swap(arr,i,r_index);
+
+        pos=r_index;
+
+        }
+
+    }
+
+    else
+
+    return;
+
+    sink(arr,pos);
+
+}
+
+void delete_min(int *arr)
+{
+
+    swap(arr,1,size);
+
+    size--;
+
+    sink(arr,1);
+
+}
+
+int main() {
+
+    int n;
+
+    scanf("%d",&n);
+
+    int arr[n+1];
+
+    int i;
+
+    for(i=1;i<=n;i++)
+
+    {
+
+    scanf("%d",&arr[i]);
+
+    insert(arr,i);
+
+    }
+
+    delete_min(arr);
+
+    delete_min(arr);
+
+    for(i=1;i<=size;i++)
+
+    printf("%d ",arr[i]);
+
+}
