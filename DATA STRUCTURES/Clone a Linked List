@@ -1,0 +1,88 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node *random;
+    struct node *next;
+};
+void insert_at_end(struct node **head,int data)
+{
+    struct node *curr=*head;
+    while(curr && curr->next)
+    {
+        curr=curr->next;
+    }
+    struct node *n=(struct node*)malloc(sizeof(struct node));
+    n->data=data;
+    n->random=NULL;
+    if((*head) == NULL)
+    *head=n;
+    else
+    curr->next=n;
+    n->next=NULL;
+    
+}
+
+
+void clone(struct node **head1,struct node **head2)
+{
+    struct node *curr=*head1;
+    struct node *nextt=NULL;
+    if(curr)
+    nextt=curr->next;
+    struct node *ptr1=*head2;
+    while(curr)
+    {
+        curr->next=ptr1;
+        ptr1->random=curr;
+        ptr1=ptr1->next;
+        curr=nextt;
+        if(curr)
+        nextt=nextt->next;
+    }
+    ptr1=*head2;
+    while(ptr1)
+    {
+        ptr1->random=ptr1->random->random->next;
+        ptr1=ptr1->next;
+    }
+    
+    
+    
+}
+
+int main() {
+  struct node *h=NULL;
+  insert_at_end(&h,1);
+  insert_at_end(&h,2);
+  insert_at_end(&h,3);
+  insert_at_end(&h,4);
+ insert_at_end(&h,5);
+
+  
+  struct node *curr=h;
+  curr->random=h->next->next;
+  curr=curr->next;
+  curr->random=h->next->next->next->next;
+  curr=curr->next;
+  curr->random=h;
+  curr=curr->next;
+  curr->random=h->next;
+  curr=curr->next;
+  curr->random=h->next->next;
+ struct node *h1=NULL;
+  insert_at_end(&h1,6);
+  insert_at_end(&h1,7);
+  insert_at_end(&h1,8);
+  insert_at_end(&h1,9);
+  insert_at_end(&h1,10);
+  clone(&h,&h1);
+  curr=h1;
+  while(curr)
+  {
+      printf("%p %d %p\n",curr->random,curr->data,curr->next);
+      curr=curr->next;
+  }
+  
+}
