@@ -1,0 +1,89 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct stack
+{
+    char data;
+    struct stack *next;
+}Stack;
+
+void push(Stack **head,char c)
+{
+    Stack *newnode=(Stack*)malloc(sizeof(Stack));
+    if(newnode==NULL)
+    printf("Sorry,The stack is full!");
+    else
+    {
+        newnode->data=c;
+        newnode->next=*head;
+        *head=newnode;
+    }
+}
+_Bool isEmpty(Stack *head)
+{
+    if(head==NULL)
+    return 1;
+    else
+    return 0;
+}
+char peek(Stack *head)
+{
+    return head->data;
+}
+void pop(Stack **head)
+{
+    Stack *temp=*head;
+    *head=temp->next;
+    free(temp);
+    temp=NULL;
+}
+void check_parenthesis(Stack *h,char s[])
+{
+    int i=0;
+    while(s[i]!='\0')
+    {
+        if((s[i]=='(')||(s[i]=='[')||(s[i]=='{'))
+        {
+            push(&h,s[i]);
+        }
+        else
+        {
+            if(isEmpty(h))
+            {
+            printf("NOT VALID");
+            return ;
+            }
+            switch(s[i])
+            {
+                case ')':
+                if(peek(h)=='(')
+                pop(&h);
+                break;
+                case ']':
+                if(peek(h)=='[')
+                pop(&h);
+                break;
+                case '}':
+                if(peek(h)=='{')
+                pop(&h);
+                break;
+                default:
+                printf("NOT VALID");
+                return ;
+            }
+        }
+        i++;
+    }
+    if(isEmpty(h))
+    printf("VALID");
+    else
+    printf("NOT VALID");
+}
+
+int main() {
+    char s[20];
+    scanf("%s",s);
+    Stack *h=NULL;
+    check_parenthesis(h,s);
+    
+    
+}
