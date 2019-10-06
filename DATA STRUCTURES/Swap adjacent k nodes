@@ -1,0 +1,80 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node *next;
+};
+void insert_at_end(struct node **head,int data)
+{
+    struct node *curr=*head;
+    while(curr && curr->next)
+    {
+        curr=curr->next;
+    }
+    struct node *n=(struct node*)malloc(sizeof(struct node));
+    n->data=data;
+    
+    if((*head) == NULL)
+    *head=n;
+    else
+    curr->next=n;
+    n->next=NULL;
+    
+}
+
+void swap(struct node **head,int k)
+{
+    struct node *ptr1=NULL,*ptr2=NULL,*ptr3=NULL,*ptr4=NULL;
+    int i=1;
+    while(*head)
+    {
+        ptr1=*head;
+        ptr2=*head;
+        i=1;
+        while(ptr2->next && (i<k))
+        {
+           ptr2=ptr2->next;
+           i++;
+        }
+         if(ptr2->next)
+        {
+           i=1;
+           ptr3=ptr2->next;
+           ptr4=ptr3;
+           while(ptr4->next && (i<k))
+           {
+              ptr4=ptr4->next;
+               i++;
+           }
+           if(i==k)
+           {
+           *head=ptr3;
+            ptr2->next=ptr4->next;
+            ptr4->next=ptr1;
+            head=&(ptr2->next);
+           }
+           else
+           break;
+        }
+    }
+}
+
+int main() {
+  struct node *h=NULL;
+  insert_at_end(&h,1);
+  insert_at_end(&h,2);
+  insert_at_end(&h,3);
+  insert_at_end(&h,4);
+ insert_at_end(&h,5);
+ insert_at_end(&h,6);
+ insert_at_end(&h,7);
+insert_at_end(&h,8);
+ swap(&h,2);
+  struct node *curr=h;
+  while(curr)
+  {
+      printf("%d ",curr->data);
+      curr=curr->next;
+  }
+}
