@@ -1,0 +1,86 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+  int data;
+  struct node *next;
+};
+void insert_at_end(struct node **head,int data)
+{
+    struct node *curr=*head;
+    while(curr && curr->next)
+    {
+        curr=curr->next;
+    }
+    struct node *n=(struct node*)malloc(sizeof(struct node));
+    n->data=data;
+    if((*head)==NULL)
+    *head=n;
+    else
+    curr->next=n;
+    n->next=NULL;
+}
+struct node* reverse(struct node *ptr1,struct node *ptr2)
+{
+    struct node *prev=ptr2->next;
+    struct node *curr=ptr1;
+    struct node *nextt=NULL;
+    if(curr)
+    nextt=curr->next;
+    while((curr->next)!=(ptr2->next))
+    {
+        curr->next=prev;
+        prev=curr;
+        curr=nextt;
+        if(curr)
+        nextt=nextt->next;
+        
+    }
+    curr->next=prev;
+    prev=curr;
+    return prev;
+}
+struct node* reversek(struct node *head,int k)
+{
+    struct node *ptr1=head;
+    struct node *ptr2=head;
+    int i=1;
+    while((ptr2->next) && (i<k))
+    {
+        ptr2=ptr2->next;
+        i++;
+    }
+    if((ptr2->next) == NULL)
+    {
+        return (reverse(ptr1,ptr2));
+    }
+    ptr2->next=reversek(ptr2->next,k);
+    return (reverse(ptr1,ptr2));
+}
+
+
+int main() {
+   struct node *h=NULL;
+   insert_at_end(&h,10);
+   insert_at_end(&h,20);
+   insert_at_end(&h,30);
+   insert_at_end(&h,40);
+   insert_at_end(&h,50);
+   //insert_at_end(&h,60);
+   int k;
+   scanf("%d",&k);
+   struct node *curr=h;
+   while(curr)
+   {
+       printf("%d ",curr->data);
+       curr=curr->next;
+   }
+   h=reversek(h,k);
+   printf("\n");
+   curr=h;
+   while(curr)
+   {
+       printf("%d ",curr->data);
+       curr=curr->next;
+   }
+}
