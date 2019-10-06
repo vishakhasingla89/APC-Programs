@@ -1,0 +1,109 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node* next;
+};
+void insert_at_beg(struct node **head,int data)
+{
+    struct node *n=(struct node*)malloc(sizeof(struct node));
+    n->data=data;
+    n->next=*head;
+    *head=n;
+}
+void insert_at_pos(struct node **head,int data,int pos)
+{
+    struct node* n=(struct node*)malloc(sizeof(struct node));
+    int i=1;
+    if(pos==1)
+    {
+        insert_at_beg(head,data);
+    }
+    else
+    {
+        struct node* curr=*head;
+        while(curr&&i<pos-1)
+        {
+            curr=curr->next;
+            i++;
+        }
+        if(curr->next!=NULL)
+        {
+        n->data=data;
+        n->next=curr->next;
+        curr->next=n;
+        }
+    }
+}
+void insert_at_end(struct node **head,int data)
+{
+    struct node *n=(struct node*)malloc(sizeof(struct node));
+    struct node *curr=*head;
+    while(curr->next!=NULL)
+    {
+        curr=curr->next;
+    }
+    n->data=data;
+    n->next=NULL;
+    curr->next=n;
+}
+void delete_at_beg(struct node **head)
+{
+    struct node* temp=*head;
+    *head=(*head)->next;
+    free(temp);
+    temp=NULL;
+}
+void delete_at_end(struct node **head)
+{
+    struct node* curr=*head;
+    while(curr&&(curr->next)&&(curr->next->next))
+    {
+        curr=curr->next;
+    }
+    struct node *temp=curr->next;
+    free(temp);
+    temp=NULL;
+    curr->next=NULL;
+}
+void delete_at_pos(struct node **head,int pos)
+{
+    int i=1;
+    struct node *curr=*head;
+    struct node *prev=*head;
+    if(pos==1)
+    {
+        delete_at_beg(head);
+    }
+    while(curr&&i<pos)
+    {
+       prev=curr;
+       curr=curr->next;
+       i++;
+    }
+    if(curr!=NULL)
+    {
+    struct node *temp=prev->next;
+    prev->next=curr->next;
+    free(temp);
+    temp=NULL;
+    }
+}
+int main() {
+  struct node* h=NULL;
+  insert_at_beg(&h,10);
+  insert_at_pos(&h,20,1);
+  insert_at_pos(&h,30,2);
+  insert_at_pos(&h,40,4);//should not enter the linked list
+  insert_at_end(&h,50);
+  delete_at_beg(&h);
+  delete_at_end(&h);
+  delete_at_pos(&h,3);
+  struct node* curr=h;
+  while(curr)
+  {
+      printf("%d %p\n",curr->data,curr->next);
+      curr=curr->next;
+  }
+}
