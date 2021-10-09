@@ -1,0 +1,12 @@
+func twoSum(nums []int, target int) []int {
+    numMap := make(map[int]int)
+    for i := 0; i < len(nums); i++ {
+        numMap[nums[i]] = i
+    }
+    for i := 0; i < len(nums); i++ {
+        if val ,ok := numMap[target - nums[i]]; ok && i != val {
+            return []int{i, val}
+        }
+    }
+    return nil
+}
