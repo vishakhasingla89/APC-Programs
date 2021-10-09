@@ -1,0 +1,30 @@
+func getOccurencesMap(nums1 []int) map[int]int{
+    res := make(map[int]int)
+    for _, val := range nums1 {
+        if occ, ok := res[val]; ok {
+            res[val] = occ + 1
+        } else {
+            res[val] = 1
+        }
+    }
+    return res
+}
+func intersect(nums1 []int, nums2 []int) []int {
+    frequencyMap1 := getOccurencesMap(nums1)
+    frequencyMap2 := getOccurencesMap(nums2)
+    var intersection []int
+    for key, val := range frequencyMap2 {
+        if occ, ok := frequencyMap1[key]; ok {
+            var t int
+            if occ <= val {
+                t = occ
+            } else {
+                t = val
+            }
+            for i := 0; i < t; i++ {
+                intersection = append(intersection, key)
+            }
+        }
+    }
+    return intersection
+}
